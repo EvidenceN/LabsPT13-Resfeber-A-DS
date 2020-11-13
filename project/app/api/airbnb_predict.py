@@ -27,7 +27,7 @@ class Item(BaseModel):
         return value
 
 
-@router.post('/predict')
+@router.post('/airbnb_predict')
 async def predict(item: Item):
     """
     Make random baseline predictions for classification problem 🔮

@@ -2,16 +2,18 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
-from app.api import predict, viz
+from app.api import gas_predict, viz, airbnb_predict, tesla_predict
 
 app = FastAPI(
-    title='YOUR-PRODUCT-TEAM-NAME DS API',
-    description='Replace this placeholder text',
+    title='RESFEBER CARTER DS API',
+    description='Awesome Data Science Team',
     version='0.1',
     docs_url='/',
 )
 
-app.include_router(predict.router)
+app.include_router(gas_predict.router)
+app.include_router(airbnb_predict.router)
+app.include_router(tesla_predict.router)
 app.include_router(viz.router)
 
 app.add_middleware(
