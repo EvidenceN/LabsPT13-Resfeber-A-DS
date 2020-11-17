@@ -27,7 +27,7 @@ class Item(BaseModel):
         return value
 
 
-@router.post('/gas_predict')
+@router.post('/GAS_predict_AWS_Test')
 async def predict(item: Item):
     """
     Make random baseline predictions for classification problem 🔮
