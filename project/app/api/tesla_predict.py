@@ -35,7 +35,7 @@ async def predict(item: Item):
     ### Request Body
     - `x1`: positive float
     - `x2`: integer
-    - `x3`: string
+    - `x3`: string 
 
     ### Response
     - `prediction`: boolean, at random
