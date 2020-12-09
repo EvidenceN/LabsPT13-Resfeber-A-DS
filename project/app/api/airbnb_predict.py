@@ -1,5 +1,6 @@
 import logging
-import random
+import os
+import pickle
 
 from fastapi import APIRouter
 import pandas as pd
@@ -12,44 +13,71 @@ router = APIRouter()
 class Item(BaseModel):
     """Use this data model to parse the request body JSON."""
 
-    x1: float = Field(..., example=3.14)
-    x2: int = Field(..., example=-42)
-    x3: str = Field(..., example='banjo')
+    room_type: str = Field(..., example = "Entire home/apt") 
+    latitude: float = Field(..., example = 42.0)
+    """positive value"""
+    longitude: float = Field(..., example = -42.0)
+    """negative value"""
 
     def to_df(self):
         """Convert pydantic object to pandas dataframe with 1 row."""
         return pd.DataFrame([dict(self)])
 
-    @validator('x1')
-    def x1_must_be_positive(cls, value):
-        """Validate that x1 is a positive number."""
-        assert value > 0, f'x1 == {value}, must be > 0'
+#    @validator('room_type')
+#    def room_type_must_be_string(cls, value):
+#        """Validate that room_type is a string."""
+#        assert value == "", f'room_type == {value}, must be a string'
+#        return value
+
+    @validator('latitude')
+    def latitude_must_be_positive(cls, value):
+        """Validate that latitude is positive integer."""
+        assert value > 0, f'latitude == {value}, must be > 0'
+        return value
+
+    @validator('longitude')
+    def longitude_must_be_negative(cls, value):
+        """Validate that longitude is negative integer."""
+        assert value < 0, f'longitude == {value}, must be < 0'
         return value
 
 
 @router.post('/airbnb_predict')
 async def predict(item: Item):
     """
-    Make random baseline predictions for classification problem 🔮
+    Make AirBnB price predictions using room type, longitude, and latitude
+    On the web dev backend side, longitude and latitude information is converted into city. 
+
+    On the front-end, user selects a city and roomtype, then web dev converts that city into longitude and latitude on the back end. Then the model receives room type, longitude, and latitude information as input, this input is then used to get a model prediction. 
 
     ### Request Body
-    - `x1`: positive float
-    - `x2`: integer
-    - `x3`: string
+    - `room type`: string
+    - `latitude`: positive integer or float
+    - `longitude`: negative integer or float
 
     ### Response
-    - `prediction`: boolean, at random
-    - `predict_proba`: float between 0.5 and 1.0, 
-    representing the predicted class's probability
+    - `prediction`: airbnb price
 
-    Replace the placeholder docstring and fake predictions with your own model.
+    ### RoomType Options:
+    * Entire home/apt = "one"
+    * Private room = "two"
+    * Shared room = "three"
+    * Hotel room = "four"
+
+    On the front end, the user will pick from the room type options. On the back end, web will convert the room type options into "one" or "two", or "three" or "four" and then, this will be fed into the model to get a prediction
+
+    ### Longitude and Latitude
+    Longitude has to be negative numbers. Can be integer or float. This type is enforced.\n 
+    Latitude has to be positive numbers. Can be integer or float. This type is enforced.
     """
+    data = item.to_df()
 
-    X_new = item.to_df()
-    log.info(X_new)
-    y_pred = random.choice([True, False])
-    y_pred_proba = random.random() / 2 + 0.5
+    THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+    my_file = os.path.join(THIS_FOLDER, 'airBnB_model.pkl')
+
+    with open(my_file, "rb") as f:
+        model = pickle.load(f)
+
     return {
-        'prediction': y_pred,
-        'probability': y_pred_proba
+        'prediction': data
     }
