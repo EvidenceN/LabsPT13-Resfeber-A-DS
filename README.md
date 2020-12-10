@@ -6,9 +6,9 @@
 - Built the Data Science API
 
 ### Jessica
-
-###
-
-###
-
-###
+- 
+### Anita
+- 
+### Ethan
+- 
+### Mickey
