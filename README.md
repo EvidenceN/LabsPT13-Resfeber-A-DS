@@ -1,3 +1,14 @@
-# Labs DS template
+Api for Data Science Team Building A travel Application with WEB team, UX/UI Team, and iOS team. 
 
-[Docs](https://docs.labs.lambdaschool.com/data-science/)
+## Team Members and Contribution
+
+### Evidence Nwangwa
+- Built the Data Science API
+
+### Jessica
+
+###
+
+###
+
+###
