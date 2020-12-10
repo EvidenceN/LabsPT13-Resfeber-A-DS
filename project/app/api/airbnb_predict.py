@@ -23,12 +23,6 @@ class Item(BaseModel):
         """Convert pydantic object to pandas dataframe with 1 row."""
         return pd.DataFrame([dict(self)])
 
-#    @validator('room_type')
-#    def room_type_must_be_string(cls, value):
-#        """Validate that room_type is a string."""
-#        assert value == "", f'room_type == {value}, must be a string'
-#        return value
-
     @validator('latitude')
     def latitude_must_be_positive(cls, value):
         """Validate that latitude is positive integer."""
@@ -59,12 +53,10 @@ async def predict(item: Item):
     - `prediction`: airbnb price
 
     ### RoomType Options:
-    * Entire home/apt = "one"
-    * Private room = "two"
-    * Shared room = "three"
-    * Hotel room = "four"
-
-    On the front end, the user will pick from the room type options. On the back end, web will convert the room type options into "one" or "two", or "three" or "four" and then, this will be fed into the model to get a prediction
+    * Entire home/apt 
+    * Private room 
+    * Shared room 
+    * Hotel room 
 
     ### Longitude and Latitude
     Longitude has to be negative numbers. Can be integer or float. This type is enforced.\n 
@@ -78,6 +70,8 @@ async def predict(item: Item):
     with open(my_file, "rb") as f:
         model = pickle.load(f)
 
+    prediction = round(model.predict(data)[0])
+
     return {
-        'prediction': data
+        'AirBnB Price Prediction': prediction
     }

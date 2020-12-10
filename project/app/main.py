@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
-from app.api import gas_predict, viz, airbnb_predict, tesla_predict, viz_e
+from app.api import gas_price_prediction, airbnb_predict
 
 app = FastAPI(
     title='RESFEBER CARTER DS API',
@@ -11,11 +11,8 @@ app = FastAPI(
     docs_url='/',
 )
 
-app.include_router(gas_predict.router)
+app.include_router(gas_price_prediction.router)
 app.include_router(airbnb_predict.router)
-app.include_router(tesla_predict.router)
-app.include_router(viz.router)
-app.include_router(viz_e.router)
 
 app.add_middleware(
     CORSMiddleware,
