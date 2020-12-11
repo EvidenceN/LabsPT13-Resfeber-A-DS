@@ -1,5 +1,6 @@
 import logging
 import os
+import pickle
 
 from fastapi import APIRouter
 import pandas as pd
@@ -58,13 +59,14 @@ async def predict(item: Item):
     year = item.year
 
     THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
-    my_file = os.path.join(THIS_FOLDER, 'airBnB_model.pkl')
+    my_file = os.path.join(THIS_FOLDER, 'gas_model.pkl')
 
-    #with open(my_file, "rb") as f:
-    #    model = pickle.load(f)
+    with open(my_file, "rb") as f:
+        model = pickle.load(f)
 
-    #prediction = model.predict([[month, day, year]])
+    prediction = model.predict([[month, day, year]])[0]
+    prediction = round(prediction, 2)
 
     return {
-        'prediction': year
+        'prediction': prediction
     }
