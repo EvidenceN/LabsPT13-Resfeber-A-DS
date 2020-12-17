@@ -65,7 +65,7 @@ async def predict(item: Item):
     data = item.to_df()
 
     THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
-    my_file = os.path.join(THIS_FOLDER, 'airBnB_model.pkl')
+    my_file = os.path.join(THIS_FOLDER, 'airBnB_model_v3.pkl')
 
     with open(my_file, "rb") as f:
         model = pickle.load(f)
